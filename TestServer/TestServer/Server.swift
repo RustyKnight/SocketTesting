@@ -77,6 +77,8 @@ extension Server: GCDAsyncSocketDelegate {
 			
 			NotificationCenter.default().post(name: Server.clientConnectedNotification,
 			                                  object: Server.default)
+			
+			clientSocket?.readData(withTimeout: -1, tag: 100)
 		}
 	}
 	
@@ -93,15 +95,18 @@ extension Server: GCDAsyncSocketDelegate {
 class ClientSocketDelegate: GCDAsyncSocketDelegate {
 	
 	func socket(_ sock: GCDAsyncSocket!, didRead data: Data!, withTag tag: Int) {
-		log(info: "Client didReead")
+		log(info: "Client didRead with tag \(tag)")
+		let text = String(data: data, encoding: String.Encoding.utf8)
+		log(info: "Read \(text)")
 		let userInfo: [NSObject:AnyObject] = [Server.dataKey:data]
 		NotificationCenter.default().post(name: Server.dataReadNotification,
 		                                  object: Server.default,
 		                                  userInfo: userInfo)
+		sock.readData(withTimeout: -1, tag: 100)
 	}
 	
 	func socket(_ sock: GCDAsyncSocket!, didWriteDataWithTag tag: Int) {
-		log(info: "Client didWrite")
+		log(info: "Client didWrite with \(tag)")
 		NotificationCenter.default().post(name: Server.dataWrittenNotification,
 		                                  object: Server.default)
 	}

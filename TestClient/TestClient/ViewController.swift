@@ -25,6 +25,8 @@ class ViewController: UITableViewController {
 	@IBOutlet weak var timeIntervalSlider: UISlider!
 	@IBOutlet weak var timeIntervalSegment: UISegmentedControl!
 	
+	@IBOutlet weak var autoTransmitSwitch: UISwitch!
+	@IBOutlet weak var autoTransmitLabel: UILabel!
 	override func viewDidLoad() {
 		super.viewDidLoad()
 	}
@@ -55,6 +57,10 @@ class ViewController: UITableViewController {
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
+	
+	@IBAction func timeIntervalChanged(_ sender: AnyObject) {
+		updateTimeIntervalLabel()
+	}
 
 	@IBAction func connectChanged(_ sender: AnyObject) {
 		switch connectSwitch.isOn {
@@ -83,6 +89,9 @@ class ViewController: UITableViewController {
 		connectActivty.transition(hidden: !connecting)
 	}
 	
+	@IBAction func sendDataManually(_ sender: AnyObject) {
+		ServerService.default.sendData()
+	}
 }
 
 extension ViewController {
@@ -96,6 +105,10 @@ extension ViewController {
 			connectSwitch.isOn = connect
 		}
 		transitionConnectionState(connecting: false)
+		
+		sendDataButton.isEnabled = connect
+		autoTransmitLabel.isEnabled = connect
+		autoTransmitSwitch.isEnabled = connect
 	}
 	
 	func didConnect(_ notification: Notification!) {
@@ -104,6 +117,23 @@ extension ViewController {
 	
 	func didDisconnect(_ notification: Notification!) {
 		did(connect: false)
+	}
+}
+
+extension ViewController {
+	var timeInterval: TimeInterval {
+		let timeRange = (9.0 * 60.0) + 30.0
+		let interval = Double(timeIntervalSlider.value) * timeRange
+		return 30.0 + interval
+	}
+	
+	func updateTimeIntervalLabel() {
+		let time = timeInterval
+		let formatter = DateComponentsFormatter()
+		
+		formatter.unitsStyle = .full
+		formatter.allowedUnits = [Calendar.Unit.second, Calendar.Unit.minute]
+		timeIntervalLabel.text = formatter.string(from: time) ?? "?"
 	}
 }
 

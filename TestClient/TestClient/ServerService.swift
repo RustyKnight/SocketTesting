@@ -36,6 +36,8 @@ class ServerService {
 		socket.delegate = self
 		socket.delegateQueue = DispatchQueue.global()
 		try socket.connect(toHost: host, onPort: port)
+		
+		socket.readData(withTimeout: -1, tag: 100)
 	}
 	
 	func disconnect() {
@@ -45,6 +47,20 @@ class ServerService {
 			socket.delegateQueue = nil
 		}
 	}
+}
+
+extension ServerService {
+	
+	func sendData() {
+		if connected {
+			let date = Date()
+			log(info: "date value = \(date)")
+			let value = "\(date)"
+			log(info: "Write value = \(value)")
+			socket.write(value.data(using: String.Encoding.utf8), withTimeout: 30.0, tag: 1)
+		}
+	}
+	
 }
 
 extension ServerService: GCDAsyncSocketDelegate {
@@ -82,11 +98,15 @@ extension ServerService: GCDAsyncSocketDelegate {
 	}
 	
 	func socket(_ sock: GCDAsyncSocket!, didWriteDataWithTag tag: Int) {
-		
+		log(info: "Wrote with tag \(tag)")
 	}
 	
 	func socket(_ sock: GCDAsyncSocket!, didRead data: Data!, withTag tag: Int) {
+		log(info: "Read with tag \(tag)")
+		let text = String(data: data, encoding: String.Encoding.utf8)
+		log(info: "Read \(text)")
 		
+		socket.readData(withTimeout: -1, tag: 100)
 	}
 	
 }
