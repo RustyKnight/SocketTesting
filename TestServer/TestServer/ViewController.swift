@@ -45,6 +45,14 @@ class ViewController: NSViewController {
 		                                         selector: #selector(ViewController.clientDidDisconnect(notification:)),
 		                                         name: Server.clientDisconnectedNotification,
 		                                         object: nil)
+		NotificationCenter.default().addObserver(self,
+		                                         selector: #selector(ViewController.didReadData(notification:)),
+		                                         name: Server.dataReadNotification,
+		                                         object: nil)
+		NotificationCenter.default().addObserver(self,
+		                                         selector: #selector(ViewController.didWriteData(notification:)),
+		                                         name: Server.dataWrittenNotification,
+		                                         object: nil)
 	}
 	
 	override func viewWillDisappear() {
@@ -55,6 +63,12 @@ class ViewController: NSViewController {
 		                                            object: nil)
 		NotificationCenter.default().removeObserver(self,
 		                                            name: Server.clientDisconnectedNotification,
+		                                            object: nil)
+		NotificationCenter.default().removeObserver(self,
+		                                            name: Server.dataReadNotification,
+		                                            object: nil)
+		NotificationCenter.default().removeObserver(self,
+		                                            name: Server.dataWrittenNotification,
 		                                            object: nil)
 	}
 
@@ -121,5 +135,35 @@ extension ViewController {
 	
 	func clientDidDisconnect(notification: NSNotification!) {
 		did(connect: false)
+	}
+	
+	func didReadData(notification: NSNotification!) {
+		DispatchQueue.main.async { 
+			guard let userInfo = notification.userInfo else {
+				log(warning: "Recieved readData notification without payload")
+				return
+			}
+			guard let data = userInfo[Server.dataKey] as? String else {
+				log(warning: "Recieved readData notification without data")
+				return
+			}
+			self.dataRecievedLabel.stringValue = data
+		}
+	}
+	
+	func didWriteData(notification: NSNotification!) {
+		DispatchQueue.main.async {
+			DispatchQueue.main.async {
+				guard let userInfo = notification.userInfo else {
+					log(warning: "Recieved writeData notification without payload")
+					return
+				}
+				guard let data = userInfo[Server.dataKey] as? String else {
+					log(warning: "Recieved writeData notification without data")
+					return
+				}
+				self.dataSendLabel.stringValue = data
+			}
+		}
 	}
 }

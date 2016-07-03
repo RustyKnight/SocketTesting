@@ -26,6 +26,8 @@ class Server {
 	
 	internal let clientDelegate: ClientSocketDelegate = ClientSocketDelegate()
 	
+	internal var sentData: String?
+	
 	init() {
 		socket = GCDAsyncSocket()
 		socket.delegateQueue = DispatchQueue(label: "server-socket")
@@ -51,6 +53,7 @@ class Server {
 			return
 		}
 		let value = "\(Date())"
+		sentData = value
 		clientSocket.write(value.data(using: String.Encoding.utf8), withTimeout: 30.0, tag: 1)
 	}
 	
@@ -96,19 +99,24 @@ class ClientSocketDelegate: GCDAsyncSocketDelegate {
 	
 	func socket(_ sock: GCDAsyncSocket!, didRead data: Data!, withTag tag: Int) {
 		log(info: "Client didRead with tag \(tag)")
-		let text = String(data: data, encoding: String.Encoding.utf8)
-		log(info: "Read \(text)")
-		let userInfo: [NSObject:AnyObject] = [Server.dataKey:data]
-		NotificationCenter.default().post(name: Server.dataReadNotification,
-		                                  object: Server.default,
-		                                  userInfo: userInfo)
-		sock.readData(withTimeout: -1, tag: 100)
+		if let text = String(data: data, encoding: String.Encoding.utf8) {
+			log(info: "Read \(text)")
+			let userInfo: [NSObject:AnyObject] = [Server.dataKey:text]
+			NotificationCenter.default().post(name: Server.dataReadNotification,
+			                                  object: Server.default,
+			                                  userInfo: userInfo)
+			sock.readData(withTimeout: -1, tag: 100)
+		}
 	}
 	
 	func socket(_ sock: GCDAsyncSocket!, didWriteDataWithTag tag: Int) {
 		log(info: "Client didWrite with \(tag)")
-		NotificationCenter.default().post(name: Server.dataWrittenNotification,
-		                                  object: Server.default)
+		if let sentData = Server.default.sentData {
+			let userInfo: [NSObject: AnyObject] = [Server.dataKey: sentData]
+			NotificationCenter.default().post(name: Server.dataWrittenNotification,
+			                                  object: Server.default,
+			                                  userInfo: userInfo)
+		}
 	}
 	
 	func socketDidDisconnect(_ sock: GCDAsyncSocket!, withError err: NSError!) {
