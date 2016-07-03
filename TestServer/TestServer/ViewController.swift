@@ -99,6 +99,7 @@ class ViewController: NSViewController {
 	}
 	
 	@IBAction func sendDataClicked(_ sender: AnyObject) {
+		Server.default.sendData()
 	}
 
 }
@@ -109,6 +110,8 @@ extension ViewController {
 		DispatchQueue.main.async { 
 			self.clientConnectedLabel.isHidden = !connect
 			self.clientNotConnectedLabel.isHidden = connect
+			
+			self.sendDataButton.isEnabled = connect
 		}
 	}
 	

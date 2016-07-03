@@ -13,14 +13,20 @@ class ServerService {
 	
 	static let ServerConnectedNotification: NSNotification.Name = NSNotification.Name("Server.connected")
 	static let ServerDisconnectedNotification: NSNotification.Name = NSNotification.Name("Server.disconnected")
+
+	static let ServerSentNotification: NSNotification.Name = NSNotification.Name("Server.sent")
+	static let ServerRecivedNotification: NSNotification.Name = NSNotification.Name("Server.recived")
 	
 	static let urlKey = "Server.url"
 	static let hostKey = "Server.host"
 	static let errorKey = "Server.error"
+	static let dataKey = "Server.data"
 
 	static let `default`: ServerService = ServerService()
 	
 	internal let socket: GCDAsyncSocket = GCDAsyncSocket()
+	
+	internal var sentData: String?
 	
 	init() {
 	}
@@ -36,8 +42,6 @@ class ServerService {
 		socket.delegate = self
 		socket.delegateQueue = DispatchQueue.global()
 		try socket.connect(toHost: host, onPort: port)
-		
-		socket.readData(withTimeout: -1, tag: 100)
 	}
 	
 	func disconnect() {
@@ -54,9 +58,8 @@ extension ServerService {
 	func sendData() {
 		if connected {
 			let date = Date()
-			log(info: "date value = \(date)")
 			let value = "\(date)"
-			log(info: "Write value = \(value)")
+			sentData = value
 			socket.write(value.data(using: String.Encoding.utf8), withTimeout: 30.0, tag: 1)
 		}
 	}
@@ -64,6 +67,11 @@ extension ServerService {
 }
 
 extension ServerService: GCDAsyncSocketDelegate {
+	
+	func startReading() {
+		socket.readData(withTimeout: -1, tag: 100)
+	}
+	
 	func socket(_ sock: GCDAsyncSocket!, didConnectTo url: URL!) {
 		DispatchQueue.main.async {
 			log(info: "didConnectTo url \(url)")
@@ -77,6 +85,7 @@ extension ServerService: GCDAsyncSocketDelegate {
 	func socket(_ sock: GCDAsyncSocket!, didConnectToHost host: String!, port: UInt16) {
 		DispatchQueue.main.async { 
 			log(info: "didConnectTo host \(host)")
+			self.startReading()
 			let userInfo: [NSObject:AnyObject] = [ServerService.hostKey: host]
 			NotificationCenter.default().post(name: ServerService.ServerConnectedNotification,
 			                                  object: self,
@@ -87,6 +96,7 @@ extension ServerService: GCDAsyncSocketDelegate {
 	func socketDidDisconnect(_ sock: GCDAsyncSocket!, withError err: NSError!) {
 		DispatchQueue.main.async {
 			log(info: "didDisconnect with \(err)")
+			self.startReading()
 			var userInfo: [NSObject:AnyObject] = [:]
 			if let error = err {
 				userInfo[ServerService.errorKey] = error
@@ -98,15 +108,32 @@ extension ServerService: GCDAsyncSocketDelegate {
 	}
 	
 	func socket(_ sock: GCDAsyncSocket!, didWriteDataWithTag tag: Int) {
-		log(info: "Wrote with tag \(tag)")
+		DispatchQueue.main.async {
+			log(info: "Wrote \(self.sentData) with tag \(tag)")
+			var userInfo: [NSObject:AnyObject] = [:]
+			if let sentData = self.sentData {
+				userInfo[ServerService.dataKey] = sentData
+			}
+			NotificationCenter.default().post(name: ServerService.ServerSentNotification,
+			                                  object: self,
+			                                  userInfo: userInfo)
+		}
 	}
 	
 	func socket(_ sock: GCDAsyncSocket!, didRead data: Data!, withTag tag: Int) {
-		log(info: "Read with tag \(tag)")
-		let text = String(data: data, encoding: String.Encoding.utf8)
-		log(info: "Read \(text)")
-		
-		socket.readData(withTimeout: -1, tag: 100)
+		DispatchQueue.main.async {
+			log(info: "Read with tag \(tag)")
+			if let text = String(data: data, encoding: String.Encoding.utf8) {
+				let userInfo: [NSObject:AnyObject] = [ServerService.dataKey:text]
+				NotificationCenter.default().post(name: ServerService.ServerRecivedNotification,
+				                                  object: self,
+				                                  userInfo: userInfo)
+			} else {
+				log(warning: "Failed to convert data to string")
+			}
+			
+			self.startReading()
+		}
 	}
 	
 }

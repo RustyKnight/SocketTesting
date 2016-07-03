@@ -27,6 +27,11 @@ class ViewController: UITableViewController {
 	
 	@IBOutlet weak var autoTransmitSwitch: UISwitch!
 	@IBOutlet weak var autoTransmitLabel: UILabel!
+	
+	
+	@IBOutlet weak var sentDataLabel: UILabel!
+	@IBOutlet weak var receivedDataLabel: UILabel!
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 	}
@@ -41,6 +46,14 @@ class ViewController: UITableViewController {
 		                                         selector: #selector(ViewController.didDisconnect),
 		                                         name: ServerService.ServerDisconnectedNotification,
 		                                         object: nil)
+		NotificationCenter.default().addObserver(self,
+		                                         selector: #selector(ViewController.didReadData),
+		                                         name: ServerService.ServerRecivedNotification,
+		                                         object: nil)
+		NotificationCenter.default().addObserver(self,
+		                                         selector: #selector(ViewController.didSendData),
+		                                         name: ServerService.ServerSentNotification,
+		                                         object: nil)
 	}
 	
 	override func viewDidDisappear(_ animated: Bool) {
@@ -51,6 +64,12 @@ class ViewController: UITableViewController {
 		                                            object: nil)
 		NotificationCenter.default().removeObserver(self,
 		                                            name: ServerService.ServerDisconnectedNotification,
+		                                            object: nil)
+		NotificationCenter.default().removeObserver(self,
+		                                            name: ServerService.ServerRecivedNotification,
+		                                            object: nil)
+		NotificationCenter.default().removeObserver(self,
+		                                            name: ServerService.ServerSentNotification,
 		                                            object: nil)
 	}
 	
@@ -117,6 +136,30 @@ extension ViewController {
 	
 	func didDisconnect(_ notification: Notification!) {
 		did(connect: false)
+	}
+	
+	func didReadData(_ notification: Notification) {
+		guard let userInfo = notification.userInfo else {
+			log(warning: "Received readData notification without any payload")
+			return
+		}
+		guard let text = userInfo[ServerService.dataKey] as? String else {
+			log(warning: "Received readData notification without valid data")
+			return
+		}
+		receivedDataLabel.text = text
+	}
+	
+	func didSendData(_ notification: Notification) {
+		guard let userInfo = notification.userInfo else {
+			log(warning: "Received sendData notification without any payload")
+			return
+		}
+		guard let text = userInfo[ServerService.dataKey] as? String else {
+			log(warning: "Received sendData notification without valid data")
+			return
+		}
+		sentDataLabel.text = text
 	}
 }
 

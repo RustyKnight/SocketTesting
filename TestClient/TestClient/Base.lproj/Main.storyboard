@@ -266,6 +266,62 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="dbJ-tq-doO">
+                                        <rect key="frame" x="0.0" y="667" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dbJ-tq-doO" id="PLd-Iz-Fyv">
+                                            <frame key="frameInset" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzf-og-LZp">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tPh-rB-zO0">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="kzf-og-LZp" firstAttribute="leading" secondItem="PLd-Iz-Fyv" secondAttribute="leadingMargin" id="0U0-xT-Ewb"/>
+                                                <constraint firstItem="tPh-rB-zO0" firstAttribute="leading" secondItem="kzf-og-LZp" secondAttribute="trailing" constant="8" id="BMW-rD-GBY"/>
+                                                <constraint firstItem="kzf-og-LZp" firstAttribute="centerY" secondItem="PLd-Iz-Fyv" secondAttribute="centerY" id="BVd-fI-2r0"/>
+                                                <constraint firstAttribute="bottom" secondItem="tPh-rB-zO0" secondAttribute="bottom" id="Snn-Ht-qou"/>
+                                                <constraint firstAttribute="trailing" secondItem="tPh-rB-zO0" secondAttribute="trailing" constant="8" id="VzX-5L-ZAw"/>
+                                                <constraint firstItem="tPh-rB-zO0" firstAttribute="top" secondItem="PLd-Iz-Fyv" secondAttribute="top" id="xrq-uW-9a2"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="SwG-69-7S9">
+                                        <rect key="frame" x="0.0" y="711" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SwG-69-7S9" id="IOk-kG-6fL">
+                                            <frame key="frameInset" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Received" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="smO-2H-PTp">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mWb-M2-rP7">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="mWb-M2-rP7" secondAttribute="bottom" id="1Jj-qp-KET"/>
+                                                <constraint firstItem="smO-2H-PTp" firstAttribute="leading" secondItem="IOk-kG-6fL" secondAttribute="leadingMargin" id="3Oz-0Z-nXH"/>
+                                                <constraint firstAttribute="trailing" secondItem="mWb-M2-rP7" secondAttribute="trailing" constant="8" id="Q2W-4T-2xw"/>
+                                                <constraint firstItem="mWb-M2-rP7" firstAttribute="top" secondItem="IOk-kG-6fL" secondAttribute="top" id="TzI-G7-BPY"/>
+                                                <constraint firstItem="mWb-M2-rP7" firstAttribute="leading" secondItem="smO-2H-PTp" secondAttribute="trailing" constant="8" id="sPf-mr-37z"/>
+                                                <constraint firstItem="smO-2H-PTp" firstAttribute="centerY" secondItem="IOk-kG-6fL" secondAttribute="centerY" id="zFA-Io-FSi"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -282,7 +338,9 @@
                         <outlet property="connectedLabel" destination="Brh-RH-eSA" id="Enp-Up-XvR"/>
                         <outlet property="notConnectedLabel" destination="ger-BU-yFG" id="ujl-p0-ZjQ"/>
                         <outlet property="portField" destination="ykQ-wi-HGo" id="Smk-J0-dg1"/>
+                        <outlet property="receivedDataLabel" destination="mWb-M2-rP7" id="XSP-2r-Gqk"/>
                         <outlet property="sendDataButton" destination="jvn-Ka-eKf" id="QHU-QJ-m3u"/>
+                        <outlet property="sentDataLabel" destination="tPh-rB-zO0" id="LhP-cu-fbf"/>
                         <outlet property="serverField" destination="iuX-mx-Fbp" id="0ZY-jF-uWk"/>
                         <outlet property="timeIntervalLabel" destination="8xZ-vB-ONl" id="ar2-Xu-7au"/>
                         <outlet property="timeIntervalSegment" destination="yCT-ud-bk1" id="8bS-BA-lr9"/>

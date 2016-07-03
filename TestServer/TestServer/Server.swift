@@ -50,7 +50,7 @@ class Server {
 			log(error: "No client connected")
 			return
 		}
-		let value = DateFormatter().string(from: Date())
+		let value = "\(Date())"
 		clientSocket.write(value.data(using: String.Encoding.utf8), withTimeout: 30.0, tag: 1)
 	}
 	
