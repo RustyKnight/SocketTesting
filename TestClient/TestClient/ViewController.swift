@@ -8,6 +8,17 @@
 
 import UIKit
 
+/*
+This might be worth investigating
+
+Add #import to GCDAsyncSocket.m
+#import <PushKit/PushKit.h>
+
+Replace in enableBackgroundingOnSocketWithCaveat
+r1 = CFReadStreamSetProperty(readStream, kCFStreamNetworkServiceType, PKPushTypeVoIP); 
+r2 = CFWriteStreamSetProperty(writeStream, kCFStreamNetworkServiceType, PKPushTypeVoIP);
+*/
+
 class ViewController: UITableViewController {
 
 	@IBOutlet weak var connectSwitch: UISwitch!
@@ -106,6 +117,11 @@ class ViewController: UITableViewController {
 		log(info: "connecting \(connecting)")
 		connectSwitch.transition(hidden: connecting)
 		connectActivty.transition(hidden: !connecting)
+	}
+
+	@IBAction func notify(_ sender: AnyObject) {
+		let nc = NotificationManager()
+		nc.trigger()
 	}
 	
 	@IBAction func sendDataManually(_ sender: AnyObject) {

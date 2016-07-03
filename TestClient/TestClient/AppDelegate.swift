@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 		// Override point for customization after application launch.
+		UNUserNotificationCenter.current().requestAuthorization([.alert, .sound, .badge]) { (granted, error) in
+			if let error = error {
+				log(error: "Failed: \(error)")
+			}
+			if !granted {
+				log(warning: "Notification failed")
+			}
+		}
 		return true
 	}
 

@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import UserNotifications
 import CocoaAsyncSocket
 
-class ServerService {
+class ServerService: NSObject {
 	
 	static let ServerConnectedNotification: NSNotification.Name = NSNotification.Name("Server.connected")
 	static let ServerDisconnectedNotification: NSNotification.Name = NSNotification.Name("Server.disconnected")
@@ -28,7 +29,7 @@ class ServerService {
 	
 	internal var sentData: String?
 	
-	init() {
+	override init() {
 	}
 	
 	var connected: Bool {
@@ -73,6 +74,9 @@ extension ServerService: GCDAsyncSocketDelegate {
 	}
 	
 	func socket(_ sock: GCDAsyncSocket!, didConnectTo url: URL!) {
+		sock.perform { 
+			sock.enableBackgroundingOnSocket()
+		}
 		DispatchQueue.main.async {
 			log(info: "didConnectTo url \(url)")
 			let userInfo: [NSObject:AnyObject] = [ServerService.urlKey: url]
@@ -83,7 +87,10 @@ extension ServerService: GCDAsyncSocketDelegate {
 	}
 	
 	func socket(_ sock: GCDAsyncSocket!, didConnectToHost host: String!, port: UInt16) {
-		DispatchQueue.main.async { 
+		sock.perform {
+			sock.enableBackgroundingOnSocket()
+		}
+		DispatchQueue.main.async {
 			log(info: "didConnectTo host \(host)")
 			self.startReading()
 			let userInfo: [NSObject:AnyObject] = [ServerService.hostKey: host]
@@ -120,20 +127,65 @@ extension ServerService: GCDAsyncSocketDelegate {
 		}
 	}
 	
+	enum NotificationActions: String {
+		case HighFive = "highfiveidentifier"
+	}
+	
+	func notify(text: String) {
+		let state = UIApplication.shared().applicationState
+		//			if state == UIApplicationState.background || state == UIApplicationState.inactive {
+		let highFiveAction = UNNotificationAction(identifier: NotificationActions.HighFive.rawValue,
+		                                          title: "High Five",
+		                                          options: [])
+		let category = UNNotificationCategory(identifier: "wassup",
+		                                      actions: [highFiveAction],
+		                                      minimalActions: [highFiveAction],
+		                                      intentIdentifiers: [],
+		                                      options: [.customDismissAction])
+		UNUserNotificationCenter.current().setNotificationCategories([category])
+
+		let note = UNMutableNotificationContent()
+		
+		note.title = "Recieved Data"
+		note.body = text
+		let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1,
+		                                                repeats: false)
+		let request = UNNotificationRequest(identifier: "data",
+		                                    content: note,
+		                                    trigger: trigger)
+		UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
+			if let error = error {
+				log(error: "\(error)")
+			}
+		})
+		//			} else {
+	}
+	
 	func socket(_ sock: GCDAsyncSocket!, didRead data: Data!, withTag tag: Int) {
-		DispatchQueue.main.async {
-			log(info: "Read with tag \(tag)")
-			if let text = String(data: data, encoding: String.Encoding.utf8) {
+		if let text = String(data: data, encoding: String.Encoding.utf8) {
+			notify(text: text)
+			DispatchQueue.main.async {
+				log(info: "Read with tag \(tag)")
 				let userInfo: [NSObject:AnyObject] = [ServerService.dataKey:text]
 				NotificationCenter.default().post(name: ServerService.ServerRecivedNotification,
 				                                  object: self,
 				                                  userInfo: userInfo)
-			} else {
-				log(warning: "Failed to convert data to string")
 			}
-			
-			self.startReading()
+		} else {
+			log(warning: "Failed to convert data to string")
 		}
+		self.startReading()
 	}
 	
+}
+
+extension ServerService: UNUserNotificationCenterDelegate {
+	
+	func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: () -> Void) {
+		log(info: "didReceive")
+	}
+	
+	func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: (UNNotificationPresentationOptions) -> Void) {
+		log(info: "willPresent")
+	}
 }

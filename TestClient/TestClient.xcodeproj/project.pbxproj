@@ -11,6 +11,7 @@
 		7088F4721D27CE10000B9ACF /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7088F4711D27CE10000B9ACF /* CocoaAsyncSocket.framework */; };
 		7088F4751D27CE57000B9ACF /* ServerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7088F4741D27CE57000B9ACF /* ServerService.swift */; };
 		7088F4771D27E413000B9ACF /* CocoaAsyncSocket.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7088F4711D27CE10000B9ACF /* CocoaAsyncSocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		70A135D61D29301400C5D47F /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A135D51D29301400C5D47F /* NotificationManager.swift */; };
 		70BE14F21D2524FF000F5402 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BE14F11D2524FF000F5402 /* AppDelegate.swift */; };
 		70BE14F41D2524FF000F5402 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BE14F31D2524FF000F5402 /* ViewController.swift */; };
 		70BE14F71D2524FF000F5402 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70BE14F51D2524FF000F5402 /* Main.storyboard */; };
@@ -54,6 +55,8 @@
 		7088F46F1D27CA52000B9ACF /* LogService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogService.swift; sourceTree = "<group>"; };
 		7088F4711D27CE10000B9ACF /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaAsyncSocket.framework; path = ../../Carthage/Build/iOS/CocoaAsyncSocket.framework; sourceTree = "<group>"; };
 		7088F4741D27CE57000B9ACF /* ServerService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerService.swift; sourceTree = "<group>"; };
+		70A135D41D29108E00C5D47F /* TestClient.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TestClient.entitlements; sourceTree = "<group>"; };
+		70A135D51D29301400C5D47F /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		70BE14EE1D2524FF000F5402 /* TestClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		70BE14F11D2524FF000F5402 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		70BE14F31D2524FF000F5402 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -103,6 +106,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		70A135D11D29108E00C5D47F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		70BE14E51D2524FF000F5402 = {
 			isa = PBXGroup;
 			children = (
@@ -110,6 +120,7 @@
 				70BE15051D2524FF000F5402 /* TestClientTests */,
 				70BE15101D2524FF000F5402 /* TestClientUITests */,
 				70BE14EF1D2524FF000F5402 /* Products */,
+				70A135D11D29108E00C5D47F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -126,6 +137,7 @@
 		70BE14F01D2524FF000F5402 /* TestClient */ = {
 			isa = PBXGroup;
 			children = (
+				70A135D41D29108E00C5D47F /* TestClient.entitlements */,
 				70BE14F11D2524FF000F5402 /* AppDelegate.swift */,
 				70BE14F81D2524FF000F5402 /* Assets.xcassets */,
 				7088F4731D27CE33000B9ACF /* Frameworks */,
@@ -135,6 +147,7 @@
 				70BE14F51D2524FF000F5402 /* Main.storyboard */,
 				7088F4741D27CE57000B9ACF /* ServerService.swift */,
 				70BE14F31D2524FF000F5402 /* ViewController.swift */,
+				70A135D51D29301400C5D47F /* NotificationManager.swift */,
 			);
 			path = TestClient;
 			sourceTree = "<group>";
@@ -229,6 +242,17 @@
 						DevelopmentTeam = YWXH886EY3;
 						DevelopmentTeamName = "Shane Whitehead";
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.HomeKit = {
+								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					70BE15011D2524FF000F5402 = {
 						CreatedOnToolsVersion = 8.0;
@@ -300,6 +324,7 @@
 			files = (
 				70BE14F41D2524FF000F5402 /* ViewController.swift in Sources */,
 				7088F4701D27CA52000B9ACF /* LogService.swift in Sources */,
+				70A135D61D29301400C5D47F /* NotificationManager.swift in Sources */,
 				7088F4751D27CE57000B9ACF /* ServerService.swift in Sources */,
 				70BE14F21D2524FF000F5402 /* AppDelegate.swift in Sources */,
 			);
@@ -449,6 +474,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TestClient/TestClient.entitlements;
 				FRAMEWORK_SEARCH_PATHS = "../Carthage/Build/**";
 				INFOPLIST_FILE = TestClient/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -462,6 +488,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TestClient/TestClient.entitlements;
 				FRAMEWORK_SEARCH_PATHS = "../Carthage/Build/**";
 				INFOPLIST_FILE = TestClient/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
