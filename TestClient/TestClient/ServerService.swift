@@ -74,8 +74,8 @@ extension ServerService: GCDAsyncSocketDelegate {
 	}
 	
 	func socket(_ sock: GCDAsyncSocket!, didConnectTo url: URL!) {
-		sock.perform { 
-			sock.enableBackgroundingOnSocket()
+		sock.perform {
+            log(info: "enableBackgroundingOnSocket \(sock.enableBackgroundingOnSocket())")
 		}
 		DispatchQueue.main.async {
 			log(info: "didConnectTo url \(url)")
@@ -87,9 +87,9 @@ extension ServerService: GCDAsyncSocketDelegate {
 	}
 	
 	func socket(_ sock: GCDAsyncSocket!, didConnectToHost host: String!, port: UInt16) {
-		sock.perform {
-			sock.enableBackgroundingOnSocket()
-		}
+        sock.perform {
+            log(info: "enableBackgroundingOnSocket \(sock.enableBackgroundingOnSocket())")
+        }
 		DispatchQueue.main.async {
 			log(info: "didConnectTo host \(host)")
 			self.startReading()
@@ -126,44 +126,9 @@ extension ServerService: GCDAsyncSocketDelegate {
 			                                  userInfo: userInfo)
 		}
 	}
-	
-	enum NotificationActions: String {
-		case HighFive = "highfiveidentifier"
-	}
-	
-	func notify(text: String) {
-		let state = UIApplication.shared().applicationState
-		//			if state == UIApplicationState.background || state == UIApplicationState.inactive {
-		let highFiveAction = UNNotificationAction(identifier: NotificationActions.HighFive.rawValue,
-		                                          title: "High Five",
-		                                          options: [])
-		let category = UNNotificationCategory(identifier: "wassup",
-		                                      actions: [highFiveAction],
-		                                      minimalActions: [highFiveAction],
-		                                      intentIdentifiers: [],
-		                                      options: [.customDismissAction])
-		UNUserNotificationCenter.current().setNotificationCategories([category])
 
-		let note = UNMutableNotificationContent()
-		
-		note.title = "Recieved Data"
-		note.body = text
-		let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1,
-		                                                repeats: false)
-		let request = UNNotificationRequest(identifier: "data",
-		                                    content: note,
-		                                    trigger: trigger)
-		UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
-			if let error = error {
-				log(error: "\(error)")
-			}
-		})
-		//			} else {
-	}
-	
 	func socket(_ sock: GCDAsyncSocket!, didRead data: Data!, withTag tag: Int) {
 		if let text = String(data: data, encoding: String.Encoding.utf8) {
-			notify(text: text)
 			DispatchQueue.main.async {
 				log(info: "Read with tag \(tag)")
 				let userInfo: [NSObject:AnyObject] = [ServerService.dataKey:text]

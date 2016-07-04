@@ -7,11 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		121B0E4A1D29F11100B6B1E9 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B0E491D29F11100B6B1E9 /* NotificationService.swift */; };
+		121B0E4C1D29F40100B6B1E9 /* AlertUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B0E4B1D29F40100B6B1E9 /* AlertUtils.swift */; };
+		121B0E4E1D29F43200B6B1E9 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B0E4D1D29F43200B6B1E9 /* Operators.swift */; };
+		121B0E501D29F51100B6B1E9 /* KeyboardDismisser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B0E4F1D29F51100B6B1E9 /* KeyboardDismisser.swift */; };
+		126219881D29FB57007049AC /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 126219851D29FB57007049AC /* AsyncSocket.m */; };
+		126219891D29FB57007049AC /* AsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 126219871D29FB57007049AC /* AsyncUdpSocket.m */; };
+		1262198E1D29FB62007049AC /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1262198B1D29FB62007049AC /* GCDAsyncSocket.m */; };
+		1262198F1D29FB62007049AC /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1262198D1D29FB62007049AC /* GCDAsyncUdpSocket.m */; };
+		126219911D29FD08007049AC /* BakgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126219901D29FD08007049AC /* BakgroundTask.swift */; };
+		126219941D2A1C42007049AC /* AudioBackgroundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126219931D2A1C42007049AC /* AudioBackgroundManager.swift */; };
 		7088F4701D27CA52000B9ACF /* LogService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7088F46F1D27CA52000B9ACF /* LogService.swift */; };
-		7088F4721D27CE10000B9ACF /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7088F4711D27CE10000B9ACF /* CocoaAsyncSocket.framework */; };
 		7088F4751D27CE57000B9ACF /* ServerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7088F4741D27CE57000B9ACF /* ServerService.swift */; };
-		7088F4771D27E413000B9ACF /* CocoaAsyncSocket.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7088F4711D27CE10000B9ACF /* CocoaAsyncSocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		70A135D61D29301400C5D47F /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A135D51D29301400C5D47F /* NotificationManager.swift */; };
 		70BE14F21D2524FF000F5402 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BE14F11D2524FF000F5402 /* AppDelegate.swift */; };
 		70BE14F41D2524FF000F5402 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BE14F31D2524FF000F5402 /* ViewController.swift */; };
 		70BE14F71D2524FF000F5402 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70BE14F51D2524FF000F5402 /* Main.storyboard */; };
@@ -45,18 +52,30 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7088F4771D27E413000B9ACF /* CocoaAsyncSocket.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		121B0E491D29F11100B6B1E9 /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		121B0E4B1D29F40100B6B1E9 /* AlertUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertUtils.swift; sourceTree = "<group>"; };
+		121B0E4D1D29F43200B6B1E9 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
+		121B0E4F1D29F51100B6B1E9 /* KeyboardDismisser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardDismisser.swift; sourceTree = "<group>"; };
+		126219801D29FB05007049AC /* CocoaAsyncSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CocoaAsyncSocket.h; sourceTree = "<group>"; };
+		126219841D29FB57007049AC /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
+		126219851D29FB57007049AC /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
+		126219861D29FB57007049AC /* AsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncUdpSocket.h; sourceTree = "<group>"; };
+		126219871D29FB57007049AC /* AsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncUdpSocket.m; sourceTree = "<group>"; };
+		1262198A1D29FB62007049AC /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
+		1262198B1D29FB62007049AC /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
+		1262198C1D29FB62007049AC /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
+		1262198D1D29FB62007049AC /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
+		126219901D29FD08007049AC /* BakgroundTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BakgroundTask.swift; sourceTree = "<group>"; };
+		126219931D2A1C42007049AC /* AudioBackgroundManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioBackgroundManager.swift; sourceTree = "<group>"; };
 		7088F46F1D27CA52000B9ACF /* LogService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogService.swift; sourceTree = "<group>"; };
-		7088F4711D27CE10000B9ACF /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaAsyncSocket.framework; path = ../../Carthage/Build/iOS/CocoaAsyncSocket.framework; sourceTree = "<group>"; };
 		7088F4741D27CE57000B9ACF /* ServerService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerService.swift; sourceTree = "<group>"; };
 		70A135D41D29108E00C5D47F /* TestClient.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TestClient.entitlements; sourceTree = "<group>"; };
-		70A135D51D29301400C5D47F /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		70BE14EE1D2524FF000F5402 /* TestClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		70BE14F11D2524FF000F5402 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		70BE14F31D2524FF000F5402 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -77,7 +96,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7088F4721D27CE10000B9ACF /* CocoaAsyncSocket.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,12 +116,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7088F4731D27CE33000B9ACF /* Frameworks */ = {
+		126219811D29FB37007049AC /* Sockets */ = {
 			isa = PBXGroup;
 			children = (
-				7088F4711D27CE10000B9ACF /* CocoaAsyncSocket.framework */,
+				126219831D29FB48007049AC /* GCD */,
+				126219821D29FB40007049AC /* RunLoop */,
 			);
-			name = Frameworks;
+			name = Sockets;
+			sourceTree = "<group>";
+		};
+		126219821D29FB40007049AC /* RunLoop */ = {
+			isa = PBXGroup;
+			children = (
+				126219841D29FB57007049AC /* AsyncSocket.h */,
+				126219851D29FB57007049AC /* AsyncSocket.m */,
+				126219861D29FB57007049AC /* AsyncUdpSocket.h */,
+				126219871D29FB57007049AC /* AsyncUdpSocket.m */,
+			);
+			name = RunLoop;
+			sourceTree = "<group>";
+		};
+		126219831D29FB48007049AC /* GCD */ = {
+			isa = PBXGroup;
+			children = (
+				1262198A1D29FB62007049AC /* GCDAsyncSocket.h */,
+				1262198B1D29FB62007049AC /* GCDAsyncSocket.m */,
+				1262198C1D29FB62007049AC /* GCDAsyncUdpSocket.h */,
+				1262198D1D29FB62007049AC /* GCDAsyncUdpSocket.m */,
+			);
+			name = GCD;
 			sourceTree = "<group>";
 		};
 		70A135D11D29108E00C5D47F /* Frameworks */ = {
@@ -137,17 +178,23 @@
 		70BE14F01D2524FF000F5402 /* TestClient */ = {
 			isa = PBXGroup;
 			children = (
-				70A135D41D29108E00C5D47F /* TestClient.entitlements */,
+				126219811D29FB37007049AC /* Sockets */,
+				121B0E4B1D29F40100B6B1E9 /* AlertUtils.swift */,
 				70BE14F11D2524FF000F5402 /* AppDelegate.swift */,
 				70BE14F81D2524FF000F5402 /* Assets.xcassets */,
-				7088F4731D27CE33000B9ACF /* Frameworks */,
+				126219801D29FB05007049AC /* CocoaAsyncSocket.h */,
 				70BE14FD1D2524FF000F5402 /* Info.plist */,
+				121B0E4F1D29F51100B6B1E9 /* KeyboardDismisser.swift */,
 				70BE14FA1D2524FF000F5402 /* LaunchScreen.storyboard */,
 				7088F46F1D27CA52000B9ACF /* LogService.swift */,
 				70BE14F51D2524FF000F5402 /* Main.storyboard */,
+				121B0E491D29F11100B6B1E9 /* NotificationService.swift */,
+				121B0E4D1D29F43200B6B1E9 /* Operators.swift */,
 				7088F4741D27CE57000B9ACF /* ServerService.swift */,
+				70A135D41D29108E00C5D47F /* TestClient.entitlements */,
 				70BE14F31D2524FF000F5402 /* ViewController.swift */,
-				70A135D51D29301400C5D47F /* NotificationManager.swift */,
+				126219901D29FD08007049AC /* BakgroundTask.swift */,
+				126219931D2A1C42007049AC /* AudioBackgroundManager.swift */,
 			);
 			path = TestClient;
 			sourceTree = "<group>";
@@ -241,6 +288,7 @@
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = YWXH886EY3;
 						DevelopmentTeamName = "Shane Whitehead";
+						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -323,9 +371,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				70BE14F41D2524FF000F5402 /* ViewController.swift in Sources */,
+				126219891D29FB57007049AC /* AsyncUdpSocket.m in Sources */,
 				7088F4701D27CA52000B9ACF /* LogService.swift in Sources */,
-				70A135D61D29301400C5D47F /* NotificationManager.swift in Sources */,
+				121B0E4E1D29F43200B6B1E9 /* Operators.swift in Sources */,
+				1262198F1D29FB62007049AC /* GCDAsyncUdpSocket.m in Sources */,
+				126219911D29FD08007049AC /* BakgroundTask.swift in Sources */,
+				126219941D2A1C42007049AC /* AudioBackgroundManager.swift in Sources */,
+				126219881D29FB57007049AC /* AsyncSocket.m in Sources */,
+				121B0E4C1D29F40100B6B1E9 /* AlertUtils.swift in Sources */,
 				7088F4751D27CE57000B9ACF /* ServerService.swift in Sources */,
+				121B0E4A1D29F11100B6B1E9 /* NotificationService.swift in Sources */,
+				121B0E501D29F51100B6B1E9 /* KeyboardDismisser.swift in Sources */,
+				1262198E1D29FB62007049AC /* GCDAsyncSocket.m in Sources */,
 				70BE14F21D2524FF000F5402 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -474,12 +531,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TestClient/TestClient.entitlements;
 				FRAMEWORK_SEARCH_PATHS = "../Carthage/Build/**";
 				INFOPLIST_FILE = TestClient/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.kaizen.TestClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -488,6 +547,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TestClient/TestClient.entitlements;
 				FRAMEWORK_SEARCH_PATHS = "../Carthage/Build/**";
 				INFOPLIST_FILE = TestClient/Info.plist;

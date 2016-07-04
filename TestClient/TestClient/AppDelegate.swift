@@ -9,47 +9,129 @@
 import UIKit
 import UserNotifications
 
+extension UIApplicationState: CustomDebugStringConvertible {
+
+    public var debugDescription: String {
+        var value = "Unknown"
+        switch self {
+        case active:
+            value = "Active (\(rawValue))"
+        case inactive:
+            value = "Inactive (\(rawValue))"
+        case background:
+            value = "Background (\(rawValue))"
+        }
+        return "[UIApplicationState]: \(value)"
+    }
+    
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	var window: UIWindow?
 
-
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 		// Override point for customization after application launch.
-		UNUserNotificationCenter.current().requestAuthorization([.alert, .sound, .badge]) { (granted, error) in
-			if let error = error {
-				log(error: "Failed: \(error)")
-			}
-			if !granted {
-				log(warning: "Notification failed")
-			}
-		}
+        NotificationService.instance.register()
 		return true
 	}
 
-	func applicationWillResignActive(_ application: UIApplication) {
-		// Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-		// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-	}
-
 	func applicationDidEnterBackground(_ application: UIApplication) {
-		// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-		// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-	}
+//        UIBackgroundTaskIdentifier myLongTask;
+//        myLongTask = [[UIApplicationsharedApplication]
+//            beginBackgroundTaskWithExpirationHandler:^{
+//            // If you're worried about exceeding 10 minutes, handle it here
+//            }];
+//        [[UIApplication sharedApplication] endBackgroundTask:myLongTask];
+//        BackgroundTaskManager.instance.start()
+        let startDate = Date()
+        AudioBackgroundManager.instance.start(with: 10.0) {
+            let time = Date().timeIntervalSince(startDate)
+            let formatter = DateComponentsFormatter()
+
+            formatter.unitsStyle = .full
+            formatter.allowedUnits = [Calendar.Unit.second, Calendar.Unit.minute]
+
+            log(info: "In the background for \(formatter.string(from: time) ?? "?")")
+        }
+    }
 
 	func applicationWillEnterForeground(_ application: UIApplication) {
 		// Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+//        BackgroundTaskManager.instance.stop()
+        AudioBackgroundManager.instance.stop()
 	}
 
-	func applicationDidBecomeActive(_ application: UIApplication) {
-		// Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-	}
+}
 
-	func applicationWillTerminate(_ application: UIApplication) {
-		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-	}
+extension AppDelegate: AlertActionHandler {
+    @objc(application:didReceiveLocalNotification:)
+    func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
+        didReceive(notification, for: application)
+    }
 
+    func didReceive(_ notification: UILocalNotification, `for` application: UIApplication) {
+        log(info: "\(application.applicationState.debugDescription)")
 
+        guard let userInfo = notification.userInfo else {
+            return
+        }
+        guard let isNotificationService = userInfo[NotificationServicePayloadKey.notificationService] as? Bool else {
+            return
+        }
+        if isNotificationService {
+            let alert = AlertBuilder.buildAlertController(forApplication: application,
+                                                          fromLocalNotification: notification,
+                                                          withActionHandler: self)
+
+            var topController: UIViewController = (application.keyWindow?.rootViewController)!
+
+            while topController.presentedViewController != nil {
+                topController = topController.presentedViewController!
+            }
+
+            topController.present(alert, animated: true, completion: nil)
+        }
+    }
+
+    func handleAlertAction(forApplication application: UIApplication,
+                           withIdentifier identifier: String,
+                           forLocalNotification notification: UILocalNotification) {
+        // We could handle it here, but the fact is, the delegate method will be called if the
+        // notification occured while we were in the background, so we might as well let it handle it
+        self.application(application, handleActionWithIdentifier: identifier, for: notification) { /*NOOP*/ }
+    }
+
+    @objc(application:handleActionWithIdentifier:forLocalNotification:completionHandler:)
+    func application(_ application: UIApplication,
+                     handleActionWithIdentifier identifier: String?,
+                     for notification: UILocalNotification,
+                     completionHandler: () -> Void) {
+        defer {
+            completionHandler()
+        }
+        // If the application is the background, this method will be called directly if the user
+        // clicks one of the available "actions"
+
+        log(info: "\(application.applicationState.debugDescription)")
+        log(info: "identifier \(identifier)")
+
+        // Without the identifier, it's impossible to know what to handle. This might change in the future as the userInfo payload
+        // might provide the information required to handle it
+        guard let identifer = identifier else {
+            return
+        }
+        guard let userInfo = notification.userInfo else {
+            return
+        }
+        guard let key = userInfo[NotificationServicePayloadKey.actionHandler] as? String else {
+            return
+        }
+        guard let actionHandler = NotificationService.instance.actionHandler(for: key) else {
+            return
+        }
+        actionHandler.notificationServiceHandleAction(withIdentifer: identifer, withUserInfo: userInfo)
+    }
 }
 

@@ -120,8 +120,7 @@ class ViewController: UITableViewController {
 	}
 
 	@IBAction func notify(_ sender: AnyObject) {
-		let nc = NotificationManager()
-		nc.trigger()
+        NotificationService.instance.showNotification(withTitle: "Hello", andBody: "Put your hands in the air")
 	}
 	
 	@IBAction func sendDataManually(_ sender: AnyObject) {
@@ -155,17 +154,20 @@ extension ViewController {
 	}
 	
 	func didReadData(_ notification: Notification) {
-		guard let userInfo = notification.userInfo else {
-			log(warning: "Received readData notification without any payload")
-			return
-		}
-		guard let text = userInfo[ServerService.dataKey] as? String else {
-			log(warning: "Received readData notification without valid data")
-			return
-		}
-		receivedDataLabel.text = text
+        guard let userInfo = notification.userInfo else {
+            log(warning: "Received readData notification without any payload")
+            return
+        }
+        guard let text = userInfo[ServerService.dataKey] as? String else {
+            log(warning: "Received readData notification without valid data")
+            return
+        }
+//        if UIApplication.shared().applicationState == .background {
+            NotificationService.instance.showNotification(withTitle: "Received Data", andBody: text)
+//        }
+        receivedDataLabel.text = text
 	}
-	
+
 	func didSendData(_ notification: Notification) {
 		guard let userInfo = notification.userInfo else {
 			log(warning: "Received sendData notification without any payload")
