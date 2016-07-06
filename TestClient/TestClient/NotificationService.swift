@@ -21,7 +21,7 @@ struct UserLocalNotificationCategoryIdentifier {
     static let retryCancel: String = "UserLocalNotificationCategory.retyCancel"
     static let acceptCancel: String = "UserLocalNotificationCategory.acceptCancel"
 }
-
+œ
 
 class NotificationService {
 
